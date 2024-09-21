@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>API Documentation</title>
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+         background-color: #f4f4f4;
+         color: #333;
+      }
+      header {
+         background-color: #0073e6;
+         color: white;
+         padding: 2em;
+         text-align: center;
+      }
+      header h1 {
+         color: white;
+      }
+      main {
+         padding: 2em;
+         max-width: 1000px;
+         margin: auto;
+      }
+      h1, h2 {
+         color: #0073e6;
+      }
+      .endpoint {
+         background-color: white;
+         border: 1px solid #ddd;
+         padding: 1em;
+         margin-bottom: 2em;
+         border-radius: 5px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .endpoint h2 {
+         margin-top: 0;
+      }
+      .example {
+         background-color: #f9f9f9;
+         border: 1px solid #ddd;
+         padding: 1em;
+         margin-bottom: 1em;
+         border-radius: 3px;
+         font-family: monospace;
+      }
+      form {
+         display: flex;
+         flex-direction: column;
+      }
+      label {
+         margin-bottom: 0.5em;
+      }
+      input, select, textarea {
+         padding: 0.5em;
+         margin-bottom: 1em;
+         border: 1px solid #ddd;
+         border-radius: 3px;
+         font-family: inherit;
+      }
+      button {
+         background-color: #0073e6;
+         color: white;
+         padding: 0.75em;
+         border: none;
+         border-radius: 3px;
+         cursor: pointer;
+      }
+      button:hover {
+         background-color: #005bb5;
+      }
+
+      #byIdResponseStyle {
+         display: none;
+      }
+
+      #randomResponseStyle {
+         display: none;
+      }
+   </style>
+</head>
+<body>
+<main>
+   <section class="endpoint">
+      <h2>GET /api/getImageById</h2>
+      <h3>Example Request</h3>
+      <div class="example">
+         GET /api/getImageById?id=1&redirect=0
+      </div>
+      <h3>Example Response</h3>
+      <div class="example">
+         {
+           "id": 1,
+           "url": "https://raw.githubusercontent.com/GizzyUwU/Boykisser-API/refs/heads/main/media/1.jpg"
+         }
+      </div>
+      
+      <form id="byIdForm">
+         <label for="params">Parameters:</label>
+         <label>"?id=" is a required to get the image.</label>
+         <label>"?redirect=0" is a optional parameter it makes it so you get send the url instead of being redirected to the media.</label>
+         <button type="button" onclick="testById()">Test /api/getImageById?id=1&redirect=0</button>
+      </form>
+      <div id="byIdResponseStyle">
+         <h3>Response:</h3>
+         <div class="example" id="byIdResponse"></div>
+      </div>
+   </section>
+
+   <section class="endpoint">
+      <h2>GET /api/random</h2>
+      <h3>Example Request</h3>
+      <div class="example">
+         GET /api/random?redirect=0
+      </div>
+      <h3>Example Response</h3>
+      <div class="example">
+         { 
+            "file": "1.jpg", 
+            "url": "https://raw.githubusercontent.com/GizzyUwU/Boykisser-API/main/media/1.jpg"
+         }
+      </div>
+
+      <form id="randomForm">
+         <label for="data">Parameters:</label>
+         <label>"?mediaType=" is a parameter where you can choose from "video", "gif" and "image"</label>
+         <label>"?redirect=0" is a optional parameter it makes it so you get send the url instead of being redirected to the media.</label>
+         <button type="button" onclick="testRandom()">Test /api/random?redirect=0</button>
+      </form>
+      <div id="randomResponseStyle">
+      <h3>Response:</h3>
+      <div class="example" id="randomResponse"></div>
+      </div>
+   </section>
+</main>
+
+<script>
+   async function testById() {
+      const url = `/api/getImageById?id=1&redirect=0`;
+      try {
+         const response = await fetch(url);
+         const data = await response.json();
+         document.getElementById('byIdResponse').textContent = JSON.stringify(data, null, 2);
+         document.getElementById('byIdResponseStyle').style.display = 'block';
+      } catch (error) {
+         document.getElementById('byIdResponse').textContent = 'Error: ' + error;
+         document.getElementById('byIdResponseStyle').style.display = 'block';
+      }
+   }
+
+   async function testRandom() {
+      const url = `/api/random?id=1&redirect=0`;
+
+      try {
+         const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         const result = await response.json();
+         document.getElementById('randomResponse').textContent = JSON.stringify(result, null, 2);
+         document.getElementById('randomResponseStyle').style.display = 'block';
+      } catch (error) {
+         document.getElementById('randomResponse').textContent = 'Error: ' + error;
+         document.getElementById('randomResponseStyle').style.display = 'block';
+      }
+   }
+</script>
+</body>
+</html>
