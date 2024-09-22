@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       if (mediaType) {
         switch (mediaType.toLowerCase()) {
           case 'video':
-            files = files.filter(file => file.endsWith('.mp4') || file.endsWith('.mov'));
+            files = files.filter(file => file.endsWith('.mp4') || file.endsWith('.mov') || file.endsWith('.mkv'));
             break;
           case 'gif':
             files = files.filter(file => file.endsWith('.gif'));

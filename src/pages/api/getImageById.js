@@ -16,8 +16,7 @@ export default async function handler(req, res) {
       const files = response.data.map(file => file.name);
 
       const file = files.find(file => file.split('.')[0] === id);
-      console.log(files)
-      console.log(file)
+
       if (!file) {
         return res.status(404).json({ error: `The ID "${id}" isn't used. Please specify a used id` });
       }
