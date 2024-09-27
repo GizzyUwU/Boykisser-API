@@ -5,17 +5,11 @@ export default async function handler(req, res) {
     try {
       const gitApiUrl = 'https://api.github.com/repos/GizzyUwU/Boykisser-API/contents/media';
 
-      const response = await axios.get(gitApiUrl, {
-        headers: {
-          // 'Authorization': `token YOUR_GITEA_API_TOKEN`, // If needed, replace with your actual token
-        },
-      });
+      const response = await axios.get(gitApiUrl);
 
       let files = response.data.map(file => file.name);
 
-      if (files.length === 0) {
-        return res.status(404).json({ error: 'No files found in the repository' });
-      }
+      if (files.length === 0) return res.status(404).json({ error: 'No files found in the repository' });
 
       const mediaType = req.query.mediaType;
 

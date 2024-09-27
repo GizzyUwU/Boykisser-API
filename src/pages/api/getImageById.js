@@ -7,9 +7,7 @@ export default async function handler(req, res) {
 
       const { id } = req.query;
 
-      if (!id) {
-        return res.status(400).json({ error: 'Missing "id" parameter in the query' });
-      }
+      if (!id) return res.status(400).json({ error: 'Missing "id" parameter in the query' });
 
       const response = await axios.get(gitApiUrl);
 
