@@ -6,23 +6,24 @@ export default async function handler(req, res) {
       const gitApiUrl = 'https://api.github.com/repos/GizzyUwU/Boykisser-API/contents/media';
 
       const response = await axios.get(gitApiUrl);
+      let files = response.data;
 
-      let files = response.data.map(file => file.name);
-
-      if (files.length === 0) return res.status(404).json({ error: 'No files found in the repository' });
+      if (files.length === 0) {
+        return res.status(404).json({ error: 'No files found in the repository' });
+      }
 
       const mediaType = req.query.mediaType;
 
       if (mediaType) {
         switch (mediaType.toLowerCase()) {
           case 'video':
-            files = files.filter(file => file.endsWith('.mp4') || file.endsWith('.mov') || file.endsWith('.mkv'));
+            files = files.filter(file => file.name.endsWith('.mp4') || file.name.endsWith('.mov') || file.name.endsWith('.mkv'));
             break;
           case 'gif':
-            files = files.filter(file => file.endsWith('.gif'));
+            files = files.filter(file => file.name.endsWith('.gif'));
             break;
           case 'image':
-            files = files.filter(file => /\.(jpg|jpeg|png|bmp|webp)$/.test(file));
+            files = files.filter(file => /\.(jpg|jpeg|png|bmp|webp)$/.test(file.name));
             break;
           default:
             return res.status(400).json({ error: 'Invalid file type specified' });
@@ -34,10 +35,11 @@ export default async function handler(req, res) {
       }
 
       const randomFile = files[Math.floor(Math.random() * files.length)];
-      const fileRawUrl = `https://raw.githubusercontent.com/GizzyUwU/Boykisser-API/main/media/${randomFile}`;
+      
+      const fileRawUrl = randomFile.download_url;
 
       if (req.query.redirect === '0') {
-        res.status(200).json({ file: randomFile, url: fileRawUrl });
+        res.status(200).json({ file: randomFile.name, url: fileRawUrl });
       } else {
         res.redirect(fileRawUrl);
       }
